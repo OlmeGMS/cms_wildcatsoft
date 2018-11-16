@@ -11,3 +11,5 @@ var AboutSchema = Schema({
   description_about: String,
   btn_about: String
 });
+
+module.exports = mongoose.model('About', AboutSchema);
