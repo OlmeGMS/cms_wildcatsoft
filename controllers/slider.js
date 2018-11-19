@@ -9,7 +9,7 @@ function getSlider(req, res)
 {
   var sliderId = req.params.id;
 
-  Slider.findById(carId, (err, car) => {
+  Slider.findById(sliderId, (err, sliderId) => {
     if (err) {
       res.status(500).send({message: 'Error en la petición'});
     }else {
@@ -34,7 +34,7 @@ function getSliders(req, res)
 
   Slider.find().sort('slider').paginate(page, itemsPerPage, function(err, sliders, total){
     if (err) {
-      res.satatus(500).send({message: 'Error en la petición'});
+      res.status(500).send({message: 'Error en la petición'});
     }else{
       if(!sliders){
         res.status(404).send({message: 'No hay slider'});
