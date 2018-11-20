@@ -9,7 +9,7 @@ function getSlider(req, res)
 {
   var sliderId = req.params.id;
 
-  Slider.findById(sliderId, (err, sliderId) => {
+  Slider.findById(sliderId, (err, slider) => {
     if (err) {
       res.status(500).send({message: 'Error en la petición'});
     }else {

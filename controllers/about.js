@@ -9,7 +9,7 @@ function getAbout(req, res)
 {
   var aboutId = req.params.id;
 
-  About.findById(aboutId, (err, aboutId) => {
+  About.findById(aboutId, (err, about) => {
     if (err) {
       res.status(500).send({message: 'Error en la petición'});
     }else {

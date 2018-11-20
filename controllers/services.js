@@ -10,7 +10,7 @@ function getService(req, res)
 {
   var serviceId = req.params.id;
 
-  Service.findById(serviceId, (err, serviceId) => {
+  Service.findById(serviceId, (err, service) => {
     if(err){
       res.status(500).send({message: 'Error en la petición'});
     }else {

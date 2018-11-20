@@ -13,7 +13,7 @@ function getTeam(req, res)
     if (err) {
       res.status(500).send({message: 'Error en la petición'});
     }else {
-      if (!team) {
+      if (!teamId) {
         res.status(404).send({message: 'la seccion team no existe'});
       }else {
         res.status(200).send({team});
@@ -91,13 +91,85 @@ function updateTeam(req, res)
 
   Team.findByIdAndUpdate(teamId, update, (err, teamUpdate) => {
     if (err) {
-      res.status(500).send(500).({message: 'Error en la petición'});
+      res.status(500).send({message: 'Error en la petición'});
     }else {
       if (!teamUpdate) {
         res.status(404).send({message: 'No se pudo actualiar el integrante del grupo'});
       }else {
         res.status(200).send({team: teamUpdate});
       }
+    }
+  });
+}
+
+function deleteTeam(req, res)
+{
+  var teamId = req.params.id;
+  Team.findByIdAndRemove(teamId, (err, teamRemove) => {
+    if (err) {
+      res.status(500).send({message: 'Error en la petición'});
+    }else{
+      if (!teamRemove) {
+        res.status(404).send({message: 'No se pudo eliminar el miebro del equipo'});
+      }else {
+        res.status(200).send({teamRemove});
+      }
+    }
+  });
+}
+
+
+function uploadImage(req, res) {
+  var sliderId = req.params.id;
+  var file_name = 'No ha subido imagen...';
+
+  if (req.files) {
+    var file_path = req.files.image.path;
+    var file_split = file_path.split('\/');
+    var file_name = file_split[2];
+
+    // recoger la extencion de la imagen
+    var ext_split = file_name.split('\.');
+    var file_ext = ext_split[1];
+
+    if (file_ext == 'png' || file_ext || 'jpg' ||
+      file_ext == 'gif') {
+      Slider.findByIdAndUpdate(sliderId, {
+        image: file_name
+      }, (err, sliderUpdated) => {
+        if (!sliderId) {
+          res.status(404).send({
+            message: 'No se ha podido actualizar el slider'
+          });
+        } else {
+          res.status(200).send({
+            slider: sliderUpdated
+          });
+        }
+      });
+    } else {
+      res.status(200).send({
+        message: 'La extensión del archivo noes valido'
+      });
+    }
+  } else {
+    res.status(200).send({
+      message: 'No se ha subido ninguna imagen'
+    });
+  }
+}
+
+function getImageFile(req, res) {
+  var imageFile = req.params.imageFile;
+  var path_file = './uploads/sliders/' + imageFile;
+
+  fs.exists(path_file, function(exists) {
+    if (exists) {
+      res.sendFile(path.resolve(path_file));
+    } else {
+      res.status(200).send({
+        message: 'No existe la imagen'
+      });
     }
   });
 }
@@ -109,6 +181,8 @@ module.exports = {
   getListTeams,
   getListTeams,
   saveTeam,
-  updateTeam
-
+  updateTeam,
+  deleteTeam,
+  uploadImage,
+  getImageFile
 }
