@@ -39,7 +39,89 @@ function getPromos(req, res)
     }else {
       if (!promos) {
         res.status(404).send({message: 'No hay la seccion de promos'});
+      }else{
+        res.status(200).send({promos: promos});
       }
     }
   });
+}
+
+function getListPromo(req, res)
+{
+  Promo.find({}, function(err, promos) => {
+    if(err){
+      res.status(500).send({message: 'Error en la petición'});
+    }else{
+      if(!promos){
+        res.status(404).send({message: 'No hay promos'});
+      }else{
+        res.status(200).send({promos: promos});
+      }
+    }
+  });
+}
+
+function savePromo(req, res)
+{
+  var promo = new Promo();
+  var paras = req.body;
+
+  promo.title_promo = params.title_promo;
+  promo.btn_promo = params.btn_promo;
+
+  promo.save((err, promoStored) => {
+    if(err){
+      res.status(500).send({message: 'Error en la petición'});
+    }else{
+      if(!promoStored){
+        res.status(404).send({message: 'No se pudo guardar la seccion de promo'});
+      }else{
+        res.status(200).send({promo: promoStored});
+      }
+    }
+  })
+}
+
+function updatePromo(req, res)
+{
+  var promoId = req.params.id;
+  var update = req.body;
+
+  Promo.findByIdAndUpdate(promoId, update,(err, promoUpdate) => {
+    if(err){
+      res.status(500).send({message: 'Error en la petición'});
+    }else{
+      if (!updatePromo) {
+        res.status(404).send({message: 'No se pudo actualizar'})
+      }else{
+        res.status(200).send({promo: promoUpdate});
+      }
+    }
+  });
+}
+
+function deletePromo(req, res)
+{
+  var promoId = req.params.id;
+
+  Pormo.findByIdAndRemove(promoId, (err, promoRemove) => {
+    if(err){
+      res.status(500).send({message: 'Error en la petición'});
+    }else{
+      if(!promoRemove){
+        res.status(404).send({message: 'No se pudo eliminar la promo'});
+      }else{
+        res.status(200).send({promoRemove});
+      }
+    }
+  });
+}
+
+module.exports = {
+  getPromo,
+  getPromos,
+  getListPromo,
+  savePromo,
+  updatePromo,
+  deletePromo
 }

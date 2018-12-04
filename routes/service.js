@@ -11,4 +11,4 @@ api.get('/service/:id?', md_auth.ensureAuth, ServiceController.getServices);
 api.put('/service/:id', md_auth.ensureAuth, ServiceController.updateService);
 api.delete('/service/:id', md_auth.ensureAuth, ServiceController.deleteService);
 
-module.exports = api
+module.exports = api;

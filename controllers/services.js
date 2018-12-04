@@ -46,7 +46,7 @@ function getServices(req, res)
   });
 }
 
-function getListServices()
+function getListServices(req, res)
 {
   Service.find({}, function(err, services){
     if (err) {
