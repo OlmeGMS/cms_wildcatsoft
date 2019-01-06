@@ -48,7 +48,7 @@ function getPromos(req, res)
 
 function getListPromo(req, res)
 {
-  Promo.find({}, function(err, promos) => {
+  Promo.find({}, function(err, promos) {
     if(err){
       res.status(500).send({message: 'Error en la petición'});
     }else{
@@ -91,7 +91,7 @@ function updatePromo(req, res)
     if(err){
       res.status(500).send({message: 'Error en la petición'});
     }else{
-      if (!updatePromo) {
+      if (!promoUpdate) {
         res.status(404).send({message: 'No se pudo actualizar'})
       }else{
         res.status(200).send({promo: promoUpdate});
