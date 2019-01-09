@@ -3,26 +3,26 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePaginate = require('mongoose-pagination');
 
-var Testimonie = require('../models/testimonies');
+var Blog = require('../models/blog');
 
 
-function getTestimonie(req, res) {
-    var testimonieId = req.params.id;
+function getBlog(req, res) {
+    var blogId = req.params.id;
 
-    Testimonie.findById(testimonieId, (err, testimonie) => {
+    Blog.findById(blogId, (err, blog) => {
         if (err) {
             res.status(500).send({ message: ' Error en la petición' });
         } else {
-            if (!testimonie) {
-                res.status(404).send({ message: 'La sección de testimonio no existe' });
+            if (!blog) {
+                res.status(404).send({ message: 'La sección de blog no existe' });
             } else {
-                res.status(200).send({ testimonie })
+                res.status(200).send({ blog });
             }
         }
     });
 }
 
-function getTestimonies(req, res) {
+function getBlogs(req, res) {
     if (req.params.page) {
         var page = req.params.page;
     } else {
@@ -31,91 +31,94 @@ function getTestimonies(req, res) {
 
     var itemsPerPage = 3;
 
-    Testimonie.find().sort('testimonies').paginate(page, itemsPerPage, function(err, testimonies, total) {
+    Blog.find().sort('contancts').paginate(page, itemsPerPage, function(err, blogs, total) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!testimonies) {
-                res.status(404).send({ message: 'No hay la seccion de testimonios' });
+            if (!blogs) {
+                res.status(404).send({ message: 'No hay la seccion de blogs' });
             } else {
-                res.status(200).send({ testimonies: testimonies });
+                res.status(200).send({ blogs: blogs });
             }
         }
     });
 }
 
-function getListTestimonies(req, res) {
-    Testimonie.find({}, function(err, testimonies) {
+function getListBlogs(req, res) {
+    Blog.find({}, function(err, blogs) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!testimonies) {
-                res.status(404).send({ message: 'No hay testimonios' });
+            if (!blogs) {
+                res.status(404).send({ message: 'No hay blogs' });
             } else {
-                res.status(200).send({ testimonies: testimonies });
+                res.status(200).send({ blogs: blogs });
             }
         }
     });
 }
 
-function saveTestimonie(req, res) {
-    var testimonie = new Testimonie();
+function saveBlog(req, res) {
+    var blog = new Blog();
     var params = req.body;
 
-    testimonie.title_testimonies = params.title_testimonies;
-    testimonie.lead_testimonies = params.lead_testimonies;
-    testimonie.name_testimonies = params.name_testimonies;
-    testimonie.text_testiminies = params.text_testiminies;
+    blog.title_blog = params.title_blog;
+    blog.lead_blog = params.lead_blog;
+    blog.image_blog = null;
+    blog.subtitle_blog = params.subtitle_blog;
+    blog.date_blog = params.date_blog;
+    blog.tag_blog = params.tag_blog;
+    blog.autor_blog = params.autor_blog;
 
 
-    testimonie.save((err, testimonieStored) => {
+    blog.save((err, blogStored) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!testimonieStored) {
-                res.status(404).send({ message: 'No se pudo guardar la habilidad' });
+            if (!blogStored) {
+                res.status(404).send({ message: 'No se pudo guardar el blog' });
             } else {
-                res.status(200).send({ testimonie: testimonieStored });
+                res.status(200).send({ blog: blogStored });
             }
         }
     })
 }
 
-function updateTestimonie(req, res) {
-    var skillId = req.params.id;
+function updateBlog(req, res) {
+    var blogId = req.params.id;
     var update = req.body;
 
-    Testimonie.findByIdAndUpdate(testimonieId, update, (err, updateTestimonie) => {
+    Blog.findByIdAndUpdate(blogId, update, (err, blogUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!updateTestimonie) {
+            if (!blogUpdate) {
                 res.status(404).send({ message: 'No se pudo actualizar' })
             } else {
-                res.status(200).send({ testimonie: updateTestimonie });
+                res.status(200).send({ blog: blogUpdate });
             }
         }
     });
 }
 
-function deleteTestimonie(req, res) {
-    var testmionieId = req.params.id;
+function deleteBlog(req, res) {
+    var blogId = req.params.id;
 
-    Testimonie.findByIdAndRemove(testimonieId, (err, testimonieRemove) => {
+    Blog.findByIdAndRemove(blogId, (err, blogRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!testimonieRemove) {
-                res.status(404).send({ message: 'No se pudo eliminar la habilidad' });
+            if (!blogRemove) {
+                res.status(404).send({ message: 'No se pudo eliminar el blog' });
             } else {
-                res.status(200).send({ testimonie: testimonieRemove });
+                res.status(200).send({ blog: blogRemove });
             }
         }
     });
 }
 
 function uploadImage(req, res) {
-    var testimonieId = req.params.id;
+    var blogId = req.params.id;
     var file_name = 'No ha subido imagen...';
 
     if (req.files) {
@@ -129,16 +132,16 @@ function uploadImage(req, res) {
 
         if (file_ext == 'png' || file_ext || 'jpg' ||
             file_ext == 'gif') {
-            Testimonie.findByIdAndUpdate(testimonieId, {
+            Blog.findByIdAndUpdate(blogId, {
                 image: file_name
-            }, (err, testimonieUpdated) => {
-                if (!testimonieId) {
+            }, (err, blogUpdated) => {
+                if (!blogId) {
                     res.status(404).send({
-                        message: 'No se ha podido actualizar el testimonio'
+                        message: 'No se ha podido actualizar el equipo'
                     });
                 } else {
                     res.status(200).send({
-                        testimonie: testimonieUpdated
+                        blog: blogUpdated
                     });
                 }
             });
@@ -156,7 +159,7 @@ function uploadImage(req, res) {
 
 function getImageFile(req, res) {
     var imageFile = req.params.imageFile;
-    var path_file = './uploads/testimonies/' + imageFile;
+    var path_file = './uploads/blog/' + imageFile;
 
     fs.exists(path_file, function(exists) {
         if (exists) {
@@ -170,12 +173,12 @@ function getImageFile(req, res) {
 }
 
 module.exports = {
-    getTestimonie,
-    getTestimonies,
-    getListTestimonies,
-    saveTestimonie,
-    updateTestimonie,
-    deleteTestimonie,
+    getBlog,
+    getBlogs,
+    getListBlogs,
+    saveBlog,
+    updateBlog,
+    deleteBlog,
     uploadImage,
     getImageFile
 }

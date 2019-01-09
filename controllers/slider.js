@@ -5,182 +5,176 @@ var mongoosePaginate = require('mongoose-pagination');
 
 var Slider = require('../models/slider');
 
-function getSlider(req, res)
-{
-  var sliderId = req.params.id;
+function getSlider(req, res) {
+    var sliderId = req.params.id;
 
-  Slider.findById(sliderId, (err, slider) => {
-    if (err) {
-      res.status(500).send({message: 'Error en la petición'});
-    }else {
-      if (!slider) {
-        res.status(404).send({message: 'El slider no exite'});
-      }else{
-        res.status(200).send({slider});
-      }
-    }
-  });
+    Slider.findById(sliderId, (err, slider) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!slider) {
+                res.status(404).send({ message: 'El slider no exite' });
+            } else {
+                res.status(200).send({ slider });
+            }
+        }
+    });
 }
 
-function getSliders(req, res)
-{
-  if (req.params.page) {
-    var page = req.params.page;
-  }else{
-    var page = 1;
-  }
-
-  var itemsPerPage = 3;
-
-  Slider.find().sort('slider').paginate(page, itemsPerPage, function(err, sliders, total){
-    if (err) {
-      res.status(500).send({message: 'Error en la petición'});
-    }else{
-      if(!sliders){
-        res.status(404).send({message: 'No hay slider'});
-      }else{
-        res.status(200).send({sliders: sliders});
-      }
+function getSliders(req, res) {
+    if (req.params.page) {
+        var page = req.params.page;
+    } else {
+        var page = 1;
     }
-  });
+
+    var itemsPerPage = 3;
+
+    Slider.find().sort('slider').paginate(page, itemsPerPage, function(err, sliders, total) {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!sliders) {
+                res.status(404).send({ message: 'No hay slider' });
+            } else {
+                res.status(200).send({ sliders: sliders });
+            }
+        }
+    });
 }
 
-function getListSliders(req, res)
-{
-  Slider.find({}, function(err, sliders){
-    if (err) {
-      res.status(500).send({message: 'Error en la petición'});
-    }else {
-      if (!sliders) {
-        res.status(404).send({message: 'No hay sliders creados'});
-      }else{
-        res.status(200).send({sliders: sliders});
-      }
-    }
-  });
+function getListSliders(req, res) {
+    Slider.find({}, function(err, sliders) {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!sliders) {
+                res.status(404).send({ message: 'No hay sliders creados' });
+            } else {
+                res.status(200).send({ sliders: sliders });
+            }
+        }
+    });
 }
 
-function saveSlider(req, res)
-{
-  var slider = new Slider();
-  var params = req.body;
+function saveSlider(req, res) {
+    var slider = new Slider();
+    var params = req.body;
 
-  slider.image_slider = 'null';
-  slider.text_slider = params.text;
-  slider.btn_slider = params.btn;
-  slider.status = true;
+    slider.image_slider = 'null';
+    slider.text_slider = params.text;
+    slider.btn_slider = params.btn;
+    slider.status = true;
 
-  slider.save((err, sliderStored) => {
-    if (err) {
-      res.status(500).send({message: 'Error en la petición'});
-    }else{
-      if (!sliderStored) {
-        res.status(404).send({message: 'No se pudo guardar el slider'});
-      }else{
-        res.status(200).send({slider: sliderStored});
-      }
-    }
-  });
+    slider.save((err, sliderStored) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!sliderStored) {
+                res.status(404).send({ message: 'No se pudo guardar el slider' });
+            } else {
+                res.status(200).send({ slider: sliderStored });
+            }
+        }
+    });
 }
 
-function updateSlider(req, res)
-{
-  var sliderId = req.params.id;
-  var update = req.body;
+function updateSlider(req, res) {
+    var sliderId = req.params.id;
+    var update = req.body;
 
-  Slider.findByIdAndUpdate(sliderId, update,(err, sliderUpdate) => {
-    if (err) {
-      res.status(500).send({message: 'Error en la petición'});
-    }else {
-      if(!sliderUpdate){
-        res.status(404).send({message: 'No se pudo actualizar el slider'});
-      }else {
-        res.status(200).send({slider: sliderUpdate});
-      }
-    }
-  });
+    Slider.findByIdAndUpdate(sliderId, update, (err, sliderUpdate) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!sliderUpdate) {
+                res.status(404).send({ message: 'No se pudo actualizar el slider' });
+            } else {
+                res.status(200).send({ slider: sliderUpdate });
+            }
+        }
+    });
 }
 
-function deleteSlider(req, res)
-{
-  var sliderId = req.params.id;
+function deleteSlider(req, res) {
+    var sliderId = req.params.id;
 
-  Slider.findByIdAndRemove(sliderId, (err, sliderRemove) => {
-    if(err){
-      res.status(500).send({message: 'Error al eliminar el slider'});
-    }else{
-      if (!sliderRemove) {
-        res.status(404).send({message: 'No se puedo eliminar el slider'});
-      }else {
-        res.status(200).send({sliderRemove});
-      }
-    }
-  });
+    Slider.findByIdAndRemove(sliderId, (err, sliderRemove) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al eliminar el slider' });
+        } else {
+            if (!sliderRemove) {
+                res.status(404).send({ message: 'No se puedo eliminar el slider' });
+            } else {
+                res.status(200).send({ slider: sliderRemove });
+            }
+        }
+    });
 }
 
 function uploadImage(req, res) {
-  var sliderId = req.params.id;
-  var file_name = 'No ha subido imagen...';
+    var sliderId = req.params.id;
+    var file_name = 'No ha subido imagen...';
 
-  if (req.files) {
-    var file_path = req.files.image.path;
-    var file_split = file_path.split('\/');
-    var file_name = file_split[2];
+    if (req.files) {
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('\/');
+        var file_name = file_split[2];
 
-    // recoger la extencion de la imagen
-    var ext_split = file_name.split('\.');
-    var file_ext = ext_split[1];
+        // recoger la extencion de la imagen
+        var ext_split = file_name.split('\.');
+        var file_ext = ext_split[1];
 
-    if (file_ext == 'png' || file_ext || 'jpg' ||
-      file_ext == 'gif') {
-      Slider.findByIdAndUpdate(sliderId, {
-        image: file_name
-      }, (err, sliderUpdated) => {
-        if (!sliderId) {
-          res.status(404).send({
-            message: 'No se ha podido actualizar el slider'
-          });
+        if (file_ext == 'png' || file_ext || 'jpg' ||
+            file_ext == 'gif') {
+            Slider.findByIdAndUpdate(sliderId, {
+                image: file_name
+            }, (err, sliderUpdated) => {
+                if (!sliderId) {
+                    res.status(404).send({
+                        message: 'No se ha podido actualizar el slider'
+                    });
+                } else {
+                    res.status(200).send({
+                        slider: sliderUpdated
+                    });
+                }
+            });
         } else {
-          res.status(200).send({
-            slider: sliderUpdated
-          });
+            res.status(200).send({
+                message: 'La extensión del archivo noes valido'
+            });
         }
-      });
     } else {
-      res.status(200).send({
-        message: 'La extensión del archivo noes valido'
-      });
+        res.status(200).send({
+            message: 'No se ha subido ninguna imagen'
+        });
     }
-  } else {
-    res.status(200).send({
-      message: 'No se ha subido ninguna imagen'
-    });
-  }
 }
 
 function getImageFile(req, res) {
-  var imageFile = req.params.imageFile;
-  var path_file = './uploads/sliders/' + imageFile;
+    var imageFile = req.params.imageFile;
+    var path_file = './uploads/sliders/' + imageFile;
 
-  fs.exists(path_file, function(exists) {
-    if (exists) {
-      res.sendFile(path.resolve(path_file));
-    } else {
-      res.status(200).send({
-        message: 'No existe la imagen'
-      });
-    }
-  });
+    fs.exists(path_file, function(exists) {
+        if (exists) {
+            res.sendFile(path.resolve(path_file));
+        } else {
+            res.status(200).send({
+                message: 'No existe la imagen'
+            });
+        }
+    });
 }
 
 module.exports = {
-  getSlider,
-  getSliders,
-  getListSliders,
-  saveSlider,
-  updateSlider,
-  deleteSlider,
-  uploadImage,
-  getImageFile
+    getSlider,
+    getSliders,
+    getListSliders,
+    saveSlider,
+    updateSlider,
+    deleteSlider,
+    uploadImage,
+    getImageFile
 
 }

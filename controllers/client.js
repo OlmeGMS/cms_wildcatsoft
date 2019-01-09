@@ -3,25 +3,26 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePaginate = require('mongoose-pagination');
 
-var Team = require('../models/team');
+var Client = require('../models/client');
 
-function getTeam(req, res) {
-    var teamId = req.params.id;
 
-    Team.findById(teamId, (err, teamId) => {
+function getClient(req, res) {
+    var clientId = req.params.id;
+
+    Client.findById(clientId, (err, client) => {
         if (err) {
-            res.status(500).send({ message: 'Error en la petición' });
+            res.status(500).send({ message: ' Error en la petición' });
         } else {
-            if (!teamId) {
-                res.status(404).send({ message: 'la seccion team no existe' });
+            if (!client) {
+                res.status(404).send({ message: 'La sección de cliente no existe' });
             } else {
-                res.status(200).send({ team });
+                res.status(200).send({ client })
             }
         }
     });
 }
 
-function getTeams(req, res) {
+function getClients(req, res) {
     if (req.params.page) {
         var page = req.params.page;
     } else {
@@ -30,91 +31,90 @@ function getTeams(req, res) {
 
     var itemsPerPage = 3;
 
-    Team.find().sort('team').paginate(page, itemsPerPage, function(err, teams, total) {
+    Client.find().sort('client').paginate(page, itemsPerPage, function(err, clients, total) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!teams) {
-                res.status(404).send({ message: 'No hay la seccion de queipo no exite' });
+            if (!clients) {
+                res.status(404).send({ message: 'No hay sección clientes' });
             } else {
-                res.status(200).send({ teams: teams });
+                res.status(200).send({ clients: clients });
             }
         }
     });
 }
 
-function getListTeams(req, res) {
-    Team.find({}, function(err, teams) {
+function getListClients(req, res) {
+    Client.find({}, function(err, clients) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!teams) {
-                res.status(404).send({ message: 'No se ha creado la seccionde equipo' });
+            if (!clients) {
+                res.status(404).send({ message: 'No hay clientes' });
             } else {
-                res.status(200).send({ teams: teams });
+                res.status(200).send({ clients: clients });
             }
         }
     });
 }
 
-function saveTeam(req, res) {
-    var team = new Team();
+function saveClient(req, res) {
+    var client = new Client();
     var params = req.body;
 
-    team.image_team = 'null';
-    team.name_team = params.name_team;
-    team.job_team = params.job_team;
-    team.description_team = params.description_team;
-    team.redes_team = params.redes_team;
+    client.name_client = params.name_client;
+    client.image_client = params.image_client;
 
-    team.save((err, teamStored) => {
+
+
+    client.save((err, clientStored) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!teamStored) {
-                res.status(404).send({ message: 'No se pudo guardar el miembro de integrante' });
+            if (!clientStored) {
+                res.status(404).send({ message: 'No se pudo guardar el cliente' });
             } else {
-                res.status(200).send({ team: teamStored });
+                res.status(200).send({ client: clientStored });
             }
         }
-    });
+    })
 }
 
-function updateTeam(req, res) {
-    var teamId = req.params.id;
+function updateClient(req, res) {
+    var clientId = req.params.id;
     var update = req.body;
 
-    Team.findByIdAndUpdate(teamId, update, (err, teamUpdate) => {
+    Client.findByIdAndUpdate(clientId, update, (err, updateClient) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!teamUpdate) {
-                res.status(404).send({ message: 'No se pudo actualiar el integrante del grupo' });
+            if (!updateClient) {
+                res.status(404).send({ message: 'No se pudo actualizar' });
             } else {
-                res.status(200).send({ team: teamUpdate });
+                res.status(200).send({ client: updateClient });
             }
         }
     });
 }
 
-function deleteTeam(req, res) {
-    var teamId = req.params.id;
-    Team.findByIdAndRemove(teamId, (err, teamRemove) => {
+function deleteClient(req, res) {
+    var clientId = req.params.id;
+
+    Client.findByIdAndRemove(clientId, (err, clientRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!teamRemove) {
-                res.status(404).send({ message: 'No se pudo eliminar el miebro del equipo' });
+            if (!clientRemove) {
+                res.status(404).send({ message: 'No se pudo eliminar el cliente' });
             } else {
-                res.status(200).send({ team: teamRemove });
+                res.status(200).send({ client: clientRemove });
             }
         }
     });
 }
-
 
 function uploadImage(req, res) {
-    var teamId = req.params.id;
+    var clientId = req.params.id;
     var file_name = 'No ha subido imagen...';
 
     if (req.files) {
@@ -128,16 +128,16 @@ function uploadImage(req, res) {
 
         if (file_ext == 'png' || file_ext || 'jpg' ||
             file_ext == 'gif') {
-            Team.findByIdAndUpdate(teamId, {
+            Client.findByIdAndUpdate(clientId, {
                 image: file_name
-            }, (err, teamUpdated) => {
-                if (!teamId) {
+            }, (err, clientUpdated) => {
+                if (!clientId) {
                     res.status(404).send({
-                        message: 'No se ha podido actualizar el equipo'
+                        message: 'No se ha podido actualizar el cliente'
                     });
                 } else {
                     res.status(200).send({
-                        team: teamUpdated
+                        client: clientUpdated
                     });
                 }
             });
@@ -155,7 +155,7 @@ function uploadImage(req, res) {
 
 function getImageFile(req, res) {
     var imageFile = req.params.imageFile;
-    var path_file = './uploads/team/' + imageFile;
+    var path_file = './uploads/clients/' + imageFile;
 
     fs.exists(path_file, function(exists) {
         if (exists) {
@@ -168,15 +168,13 @@ function getImageFile(req, res) {
     });
 }
 
-
 module.exports = {
-    getTeam,
-    getTeams,
-    getListTeams,
-    getListTeams,
-    saveTeam,
-    updateTeam,
-    deleteTeam,
+    getClient,
+    getClients,
+    getListClients,
+    saveClient,
+    updateClient,
+    deleteClient,
     uploadImage,
     getImageFile
 }
