@@ -3,7 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePaginate = require('mongoose-pagination');
 
-var Client = require('../models/client');
+var Client = require('../models/clients');
 
 
 function getClient(req, res) {

@@ -5,6 +5,10 @@ var OurProjectController = require('../controllers/ourProject');
 var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
 
+//subir ficheros
+var multipart = require('connect-multiparty');
+var md_upload = multipart({ uploadDir: './uploads/ourPoject' });
+
 api.get('/our-project/:id', md_auth.ensureAuth, OurProjectController.getOurProject);
 api.post('/our-project', md_auth.ensureAuth, OurProjectController.saveOurProject);
 api.get('/our-project/:id?', md_auth.ensureAuth, OurProjectController.getOurProjects);

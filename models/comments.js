@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Comments = Schema({
+var CommentsSchema = Schema({
     blog: { type: Schema.ObjectId, ref: 'Blog' },
     user: { type: Schema.ObjectId, ref: 'User' },
     texto_comments: String,
