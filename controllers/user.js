@@ -20,7 +20,7 @@ function saveUser(req, res) {
         // Cifrar las contraseñas
         bcrypt.hash(params.password, null, null, function(err, hash) {
             user.password = hash;
-            if (user.name != null && user.surname != null && user.dni != null && user.email != null && user.phone != null && user.rol != null) {
+            if (user.name != null && user.surname != null && user.email != null && user.rol != null) {
                 // Guardar usuario
                 user.save((err, userStored) => {
                     if (err) {

@@ -66,8 +66,7 @@ function saveRol(req, res) {
     var rol = new Rol();
     var params = req.body;
     rol.name = params.name;
-    rol.status = params.satatus;
-
+    
     rol.save((err, rolStored) => {
         if (err) {
             res.status(500).send({ message: 'Error no se pudo guardar el rol' });
