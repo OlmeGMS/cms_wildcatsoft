@@ -2,7 +2,7 @@
 
 var jwt = require('jwt-simple');
 var moment = require('moment');
-var secret = 'clave_wildcatsoft_cms';
+var secret = 'clave_secreta_cms_wildcatsoft';
 
 exports.createToken = function(user){
   var payload = {
