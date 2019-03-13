@@ -18,4 +18,5 @@ api.get('/get-image-user/:imageFile', UserController.getImageFile);
 api.get('/users/', md_auth.ensureAuth, UserController.getListUser);
 api.delete('/user/:id', md_auth.ensureAuth, UserController.deleteUser);
 api.get('/search-user/:id', md_auth.ensureAuth, UserController.searchUser);
+api.get('/users/:page', md_auth.ensureAuth, UserController.getUsers);
 module.exports = api;

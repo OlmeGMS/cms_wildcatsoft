@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var UserSchema = Schema({
   name: String,
-  surmane: String,
+  surname: String,
   email: String,
   password: String,
   image: String,

@@ -13,8 +13,11 @@ function saveUser(req, res) {
     user.name = params.name;
     user.surname = params.surname;
     user.email = params.email;
-    user.image = 'null';
+    user.image = 'gato.png';
     user.rol = params.rol;
+
+    console.log(user.surname);
+    
 
     if (params.password) {
         // Cifrar las contraseñas
@@ -243,6 +246,28 @@ function searchUser(req, res) {
     });
 }
 
+function getUsers(req, res){
+    if (req.params.page) {
+        var page = req.params.page;
+    } else {
+        var page = 1;
+    }
+
+    var itemsPerPage = 20;
+
+    User.find().sort('users').populate({ path: 'rol', populate: { path: 'Rol', model: 'Rol' } }).paginate(page, itemsPerPage, function(err, users, total) {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!users) {
+                res.status(404).send({ message: ' No hay Usuarios registrados !!' });
+            } else {
+                res.status(200).send({ users: users });
+            }
+        }
+    });
+}
+
 
 
 module.exports = {
@@ -254,5 +279,6 @@ module.exports = {
     updatePassword,
     getImageFile,
     getListUser,
-    searchUser
+    searchUser,
+    getUsers
 };
