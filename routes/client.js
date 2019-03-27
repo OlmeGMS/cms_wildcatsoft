@@ -11,7 +11,8 @@ var md_upload = multipart({ uploadDir: './uploads/team' });
 
 api.get('/client/:id', md_auth.ensureAuth, ClientController.getClient);
 api.post('/client', md_auth.ensureAuth, ClientController.saveClient);
-api.get('/clients/:id?', md_auth.ensureAuth, ClientController.getListClients);
+api.get('/clients',md_auth.ensureAuth, ClientController.getClients);
+api.get('/clients-list/:id?', md_auth.ensureAuth, ClientController.getListClients);
 api.put('/client/:id', md_auth.ensureAuth, ClientController.updateClient);
 api.delete('/client/:id', md_auth.ensureAuth, ClientController.deleteClient);
 api.post('/upload-image-client/:id', [md_auth.ensureAuth, md_upload], ClientController.uploadImage);
