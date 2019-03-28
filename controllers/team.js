@@ -116,7 +116,7 @@ function deleteTeam(req, res) {
 function uploadImage(req, res) {
     var teamId = req.params.id;
     var file_name = 'No ha subido imagen...';
-
+    
     if (req.files) {
         var file_path = req.files.image.path;
         var file_split = file_path.split('\/');

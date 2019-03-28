@@ -29,9 +29,9 @@ function getClients(req, res) {
         var page = 1;
     }
 
-    var itemsPerPage = 3;
+    var itemsPerPage = 10;
 
-    Client.find().sort('client').paginate(page, itemsPerPage, function(err, clients, total) {
+    Client.find().sort('clients').paginate(page, itemsPerPage, function(err, clients, total) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -113,12 +113,12 @@ function deleteClient(req, res) {
     });
 }
 
-function uploadImage(req, res) {
+function uploadImageClient(req, res) {
     var clientId = req.params.id;
     var file_name = 'No ha subido imagen...';
 
     if (req.files) {
-        var file_path = req.files.image.path;
+        var file_path = req.files.image_client.path;
         var file_split = file_path.split('\/');
         var file_name = file_split[2];
 
@@ -126,24 +126,25 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
-        if (file_ext == 'png' || file_ext || 'jpg' ||
-            file_ext == 'gif') {
+        if (file_ext === 'png' || file_ext === 'jpg' ||
+            file_ext === 'gif') {
             Client.findByIdAndUpdate(clientId, {
-                image: file_name
+                image_client: file_name
             }, (err, clientUpdated) => {
-                if (!clientId) {
+                if (!clientUpdated) {
                     res.status(404).send({
                         message: 'No se ha podido actualizar el cliente'
                     });
                 } else {
                     res.status(200).send({
+                        image_client: file_name,
                         client: clientUpdated
                     });
                 }
             });
         } else {
             res.status(200).send({
-                message: 'La extensión del archivo noes valido'
+                message: 'La extensión del archivo no es valido'
             });
         }
     } else {
@@ -151,6 +152,7 @@ function uploadImage(req, res) {
             message: 'No se ha subido ninguna imagen'
         });
     }
+
 }
 
 function getImageFile(req, res) {
@@ -175,6 +177,6 @@ module.exports = {
     saveClient,
     updateClient,
     deleteClient,
-    uploadImage,
+    uploadImageClient,
     getImageFile
 }
