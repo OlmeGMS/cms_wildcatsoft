@@ -7,11 +7,12 @@ var md_auth = require('../middlewares/authenticated');
 
 //subir ficheros
 var multipart = require('connect-multiparty');
-var md_upload = multipart({ uploadDir: './uploads/ourPoject' });
+var md_upload = multipart({ uploadDir: './uploads/ourProject' });
 
 api.get('/our-project/:id', md_auth.ensureAuth, OurProjectController.getOurProject);
 api.post('/our-project', md_auth.ensureAuth, OurProjectController.saveOurProject);
-api.get('/our-project/:id?', md_auth.ensureAuth, OurProjectController.getOurProjects);
+api.get('/our-projects/:page?', md_auth.ensureAuth, OurProjectController.getOurProjects);
+api.get('/our-projects-list', OurProjectController.getListOurPorject);
 api.put('/our-project/:id', md_auth.ensureAuth, OurProjectController.updateOurProject);
 api.delete('/our-project/:id', md_auth.ensureAuth, OurProjectController.deleteOurProject);
 api.post('/upload-image-our-project/:id', [md_auth.ensureAuth, md_upload], OurProjectController.uploadImage);

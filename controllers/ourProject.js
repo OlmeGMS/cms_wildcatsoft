@@ -7,6 +7,7 @@ var OurProject = require('../models/ourProject');
 
 
 function getOurProject(req, res) {
+    var ourProjectId = req.params.id;
     OurProject.findById(ourProjectId, (err, ourProject) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
@@ -14,7 +15,7 @@ function getOurProject(req, res) {
             if (!ourProject) {
                 res.status(404).send({ message: 'No hay proyectos' });
             } else {
-                res.status(200).send({ ourProject });
+                res.status(200).send({ ourProject: ourProject });
             }
         }
     });
@@ -114,7 +115,7 @@ function uploadImage(req, res) {
     var file_name = 'No ha subido imagen...';
 
     if (req.files) {
-        var file_path = req.files.image.path;
+        var file_path = req.files.image_ourProject.path;
         var file_split = file_path.split('\/');
         var file_name = file_split[2];
 
@@ -122,10 +123,10 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
-        if (file_ext == 'png' || file_ext || 'jpg' ||
+        if (file_ext == 'png' || file_ext == 'jpg' ||
             file_ext == 'gif') {
             OurProject.findByIdAndUpdate(ourProjectId, {
-                image: file_name
+                image_ourProject: file_name
             }, (err, ourProjectUpdated) => {
                 if (!ourProjectId) {
                     res.status(404).send({
@@ -133,6 +134,7 @@ function uploadImage(req, res) {
                     });
                 } else {
                     res.status(200).send({
+                        image_ourProject: file_name,
                         ourPorject: ourProjectUpdated
                     });
                 }
