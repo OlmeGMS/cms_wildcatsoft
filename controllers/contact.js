@@ -88,7 +88,7 @@ function updateContact(req, res) {
     var contactId = req.params.id;
     var update = req.body;
 
-    Contact.findByIdAndUpdate(contactId, update, (err, contactUpdate) => {
+    Contact.findOneAndUpdate({_id: contactId}, update, {new: true}, (err, contactUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -104,7 +104,7 @@ function updateContact(req, res) {
 function deleteContact(req, res) {
     var contactId = req.params.id;
 
-    Contact.findByIdAndRemove(contactId, (err, contactRemove) => {
+    Contact.findOneAndDelete({_id: contactId, contact: res.contact}, (err, contactRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {

@@ -86,7 +86,7 @@ function updatePrice(req, res) {
     var priceId = req.params.id;
     var update = req.body;
 
-    Price.findByIdAndUpdate(priceId, update, (err, priceUpdate) => {
+    Price.findOneAndUpdate({_id: priceId}, update, {new: true}, (err, priceUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -97,12 +97,13 @@ function updatePrice(req, res) {
             }
         }
     });
+
 }
 
 function deletePrice(req, res) {
     var priceId = req.params.id;
 
-    Price.findByIdAndRemove(priceId, (err, priceRemove) => {
+    Price.findOneAndDelete({_id: priceId, price: res.price}, (err, priceRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {

@@ -88,7 +88,7 @@ function updateBlog(req, res) {
     var blogId = req.params.id;
     var update = req.body;
 
-    Blog.findByIdAndUpdate(blogId, update, (err, blogUpdate) => {
+    Blog.findOneAndUpdate({_id: blogId}, update, {new: true}, (err, blogUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -104,7 +104,7 @@ function updateBlog(req, res) {
 function deleteBlog(req, res) {
     var blogId = req.params.id;
 
-    Blog.findByIdAndRemove(blogId, (err, blogRemove) => {
+    Blog.findOneAndDelete({_id: blogId, blog: res.blog}, (err, blogRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -130,21 +130,21 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
-        if (file_ext == 'png' || file_ext || 'jpg' ||
+        if (file_ext == 'png' || file_ext == 'jpg' ||
             file_ext == 'gif') {
-            Blog.findByIdAndUpdate(blogId, {
-                image: file_name
-            }, (err, blogUpdated) => {
-                if (!blogId) {
-                    res.status(404).send({
-                        message: 'No se ha podido actualizar el equipo'
-                    });
+
+            Blog.findOneAndUpdate({_id: blogId}, {image_blog: file_name}, {new: true}, (err, blogUpdate) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error en la petición' });
                 } else {
-                    res.status(200).send({
-                        blog: blogUpdated
-                    });
+                    if (!blogUpdate) {
+                        res.status(404).send({ message: 'No se pudo actualizar' })
+                    } else {
+                        res.status(200).send({ blog: blogUpdate });
+                    }
                 }
             });
+
         } else {
             res.status(200).send({
                 message: 'La extensión del archivo noes valido'

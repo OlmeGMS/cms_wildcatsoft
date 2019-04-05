@@ -84,7 +84,7 @@ function updateClient(req, res) {
     var clientId = req.params.id;
     var update = req.body;
 
-    Client.findByIdAndUpdate(clientId, update, (err, updateClient) => {
+    Client.findOneAndUpdate({_id: clientId}, update, {new: true}, (err, updateClient) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -99,8 +99,8 @@ function updateClient(req, res) {
 
 function deleteClient(req, res) {
     var clientId = req.params.id;
-
-    Client.findByIdAndRemove(clientId, (err, clientRemove) => {
+   
+    Client.findByIdAndDelete({_id: clientId, client: res.client}, (err, clientRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -128,18 +128,16 @@ function uploadImageClient(req, res) {
 
         if (file_ext === 'png' || file_ext === 'jpg' ||
             file_ext === 'gif') {
-            Client.findByIdAndUpdate(clientId, {
-                image_client: file_name
-            }, (err, clientUpdated) => {
-                if (!clientUpdated) {
-                    res.status(404).send({
-                        message: 'No se ha podido actualizar el cliente'
-                    });
+           
+            Client.findOneAndUpdate({_id: clientId}, {image_client: file_name}, {new: true}, (err, updateClient) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error en la petición' });
                 } else {
-                    res.status(200).send({
-                        image_client: file_name,
-                        client: clientUpdated
-                    });
+                    if (!updateClient) {
+                        res.status(404).send({ message: 'No se pudo actualizar' });
+                    } else {
+                        res.status(200).send({ client: updateClient });
+                    }
                 }
             });
         } else {

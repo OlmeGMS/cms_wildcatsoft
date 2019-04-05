@@ -86,7 +86,7 @@ function updateService(req, res) {
     var serviceId = req.params.id;
     var update = req.body;
 
-    Service.findByIdAndUpdate(serviceId, update, (err, serviceUpdate) => {
+    Service.findOneAndUpdate({_id: serviceId}, update, {new: true}, (err, serviceUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -102,7 +102,7 @@ function updateService(req, res) {
 function deleteService(req, res) {
     var serviceId = req.params.id;
 
-    Service.findByIdAndRemove(serviceId, (err, serviceRemove) => {
+    Service.findOneAndDelete({_id: serviceId, service: res.service}, (err, serviceRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {

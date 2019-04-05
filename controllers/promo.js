@@ -82,7 +82,7 @@ function updatePromo(req, res) {
     var promoId = req.params.id;
     var update = req.body;
 
-    Promo.findByIdAndUpdate(promoId, update, (err, promoUpdate) => {
+    Promo.findOneAndUpdate({_id: promoId}, update, {new: true}, (err, promoUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -98,7 +98,7 @@ function updatePromo(req, res) {
 function deletePromo(req, res) {
     var promoId = req.params.id;
 
-    Pormo.findByIdAndRemove(promoId, (err, promoRemove) => {
+    Promo.findOneAndDelete({_id: promoId, promo: res.promo}, (err, promoRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -108,7 +108,7 @@ function deletePromo(req, res) {
                 res.status(200).send({ promo: promoRemove });
             }
         }
-    });
+    }); 
 }
 
 module.exports = {

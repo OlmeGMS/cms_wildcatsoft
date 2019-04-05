@@ -84,7 +84,7 @@ function updateTeam(req, res) {
     var teamId = req.params.id;
     var update = req.body;
 
-    Team.findByIdAndUpdate(teamId, update, (err, teamUpdate) => {
+    Team.findOneAndUpdate({_id: teamId}, update, {new: true}, (err, teamUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -99,7 +99,8 @@ function updateTeam(req, res) {
 
 function deleteTeam(req, res) {
     var teamId = req.params.id;
-    Team.findByIdAndRemove(teamId, (err, teamRemove) => {
+
+    Team.findOneAndDelete({_id: teamId, team: res.team}, (err, teamRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -126,19 +127,18 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
-        if (file_ext == 'png' || file_ext || 'jpg' ||
+        if (file_ext == 'png' || file_ext == 'jpg' ||
             file_ext == 'gif') {
-            Team.findByIdAndUpdate(teamId, {
-                image: file_name
-            }, (err, teamUpdated) => {
-                if (!teamId) {
-                    res.status(404).send({
-                        message: 'No se ha podido actualizar el equipo'
-                    });
+
+            Team.findOneAndUpdate({_id: teamId}, {image_team: file_name}, {new: true}, (err, teamUpdate) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error en la petición' });
                 } else {
-                    res.status(200).send({
-                        team: teamUpdated
-                    });
+                    if (!teamUpdate) {
+                        res.status(404).send({ message: 'No se pudo actualiar el integrante del grupo' });
+                    } else {
+                        res.status(200).send({ team: teamUpdate });
+                    }
                 }
             });
         } else {

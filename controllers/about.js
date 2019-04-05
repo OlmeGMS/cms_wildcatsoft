@@ -86,7 +86,7 @@ function saveAbout(req, res) {
 function updateAbout(req, res) {
     var aboutId = req.params.id;
     var update = req.body;
-
+    /*
     About.findByIdAndUpdate(aboutId, update, (err, aboutUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
@@ -98,12 +98,24 @@ function updateAbout(req, res) {
             }
         }
     });
+    */
+   About.findOneAndUpdate({_id: aboutId}, update, {new: true}, (err, aboutUpdate) => {
+    if (err) {
+        res.status(500).send({ message: 'Error en la petición' });
+    } else {
+        if (!aboutUpdate) {
+            res.status(404).send({ message: 'No se puedo actualizar la seccion de about' });
+        } else {
+            res.status(200).send({ about: aboutUpdate });
+        }
+    }
+   });
 
 }
 
 function deleteAbout(req, res) {
     var aboutId = req.params.id;
-
+    /*
     About.findByIdAndRemove(aboutId, (err, aboutRemove) => {
         if (err) {
             res.status(500).send({ message: 'error en la petición' });
@@ -115,6 +127,19 @@ function deleteAbout(req, res) {
             }
         }
 
+    });
+    */
+
+    About.findOneAndDelete({_id: aboutId, about: req.about}, (err, aboutRemove) => {
+        if (err) {
+            res.status(500).send({ message: 'error en la petición' });
+        } else {
+            if (!aboutRemove) {
+                res.status(404).send({ message: 'No se pudo eliminar la seccion de about' });
+            } else {
+                res.status(200).send({ about: aboutRemove });
+            }
+        }
     });
 }
 

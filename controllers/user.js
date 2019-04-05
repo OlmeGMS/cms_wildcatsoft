@@ -118,8 +118,8 @@ function updatePassword(req, res) {
             update.password = hash;
             //console.log(hash);
             //console.log(update);
-
-            User.findByIdAndUpdate(userId, update, (err, userUpdated) => {
+            
+            User.findOneAndUpdate({_id: userId}, update, {new: true}, (err, userUpdated) => {
                 if (err) {
                     res.status(500).send({ message: 'Error no se puedo acutalizar el usuario' });
                 } else {
@@ -143,8 +143,7 @@ function updatePassword(req, res) {
 
 function deleteUser(req, res) {
     var userId = req.params.id;
-
-    User.findByIdAndRemove(userId, (err, userRemove) => {
+    User.findOneAndDelete({_id: userId, user: res.user}, (err, userRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar el usuario' });
         } else {
@@ -171,18 +170,16 @@ function uploadImage(req, res) {
         var file_ext = ext_split[1];
 
         if (file_ext === 'png' || file_ext === 'jpg' || file_ext === 'gif') {
-            User.findByIdAndUpdate(userId, {
-                image: file_name
-            }, (err, userUpdated) => {
-                if (!userUpdated) {
-                    res.status(404).send({
-                        message: 'No se ha podido actualizar el usuario'
-                    });
+            
+            User.findOneAndUpdate({_id: userId}, {image: file_name}, {new: true}, (err, userUpdated) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error no se puedo acutalizar el usuario' });
                 } else {
-                    res.status(200).send({
-                        image: file_name,
-                        user: userUpdated
-                    });
+                    if (!userUpdated) {
+                        res.status(404).send({ message: 'El usuario no ha podido actualizarse' });
+                    } else {
+                        res.status(200).send({ user: userUpdated });
+                    }
                 }
             });
         } else {

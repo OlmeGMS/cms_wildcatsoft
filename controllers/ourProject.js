@@ -81,7 +81,7 @@ function updateOurProject(req, res) {
     var ourProjectId = req.params.id;
     var update = req.body;
 
-    OurProject.findByIdAndUpdate(ourProjectId, update, (err, ourProjectUpdate) => {
+    OurProject.findByIdAndUpdate(ourProjectId, update, {new: true}, (err, ourProjectUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
         } else {

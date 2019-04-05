@@ -82,7 +82,9 @@ function updateSkill(req, res) {
     var skillId = req.params.id;
     var update = req.body;
 
-    Skill.findByIdAndUpdate(skillId, update, (err, skillUpdate) => {
+   
+
+    Skill.findOneAndUpdate({_id: skillId}, update, {new: true}, (err, skillUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -98,7 +100,7 @@ function updateSkill(req, res) {
 function deleteSkill(req, res) {
     var skillId = req.params.id;
 
-    Skill.findByIdAndRemove(skillId, (err, skillRemove) => {
+    Skill.findOneAndDelete({_id: skillId, skill: res.skill}, (err, skillRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {

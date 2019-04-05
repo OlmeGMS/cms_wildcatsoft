@@ -85,7 +85,7 @@ function updateRol(req, res) {
     var rolId = req.params.id;
     var update = req.body;
 
-    Rol.findByIdAndUpdate(rolId, update, (err, rolUpdate) => {
+    Rol.findOneAndUpdate({_id: rolId}, update, {new: true}, (err, rolUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error al actualizar el rol' });
         } else {
@@ -101,7 +101,7 @@ function updateRol(req, res) {
 function deleteRol(req, res) {
     var rolId = req.params.id;
 
-    Rol.findByIdAndRemove(rolId, (err, rolRemove) => {
+    Rol.findOneAndDelete({_id: rolId, rol: res.rol}, (err, rolRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticón' });
         } else {

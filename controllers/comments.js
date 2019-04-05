@@ -95,7 +95,7 @@ function updateComment(req, res) {
     var commentId = req.params.id;
     var update = req.body;
 
-    Comments.findByIdAndUpdate(commentId, update, (err, commentUpdate) => {
+    Comments.findOneAndUpdate({_id: commentId}, update, {new: true}, (err, commentUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -109,9 +109,9 @@ function updateComment(req, res) {
 }
 
 function deleteComment(req, res) {
-    var contactId = req.params.id;
+    var commentId = req.params.id;
 
-    Comments.findByIdAndRemove(commentId, (err, commentRemove) => {
+    Comment.findOneAndDelete({_id: commentId, comment: res.comment}, (err, commentRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {

@@ -85,12 +85,12 @@ function updateTestimonie(req, res) {
     var skillId = req.params.id;
     var update = req.body;
 
-    Testimonie.findByIdAndUpdate(testimonieId, update, (err, updateTestimonie) => {
+    Testimonie.findOneAndUpdate({_id: testimonieId}, update, {new: true}, (err, updateTestimonie) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
             if (!updateTestimonie) {
-                res.status(404).send({ message: 'No se pudo actualizar' })
+                res.status(404).send({ message: 'No se pudo actualizar' });
             } else {
                 res.status(200).send({ testimonie: updateTestimonie });
             }
@@ -101,7 +101,7 @@ function updateTestimonie(req, res) {
 function deleteTestimonie(req, res) {
     var testmionieId = req.params.id;
 
-    Testimonie.findByIdAndRemove(testimonieId, (err, testimonieRemove) => {
+    Testimonie.findOneAndDelete({_id:testmionieId, testimonie: res.testimonie}, (err, testimonieRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -127,19 +127,18 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
-        if (file_ext == 'png' || file_ext || 'jpg' ||
+        if (file_ext == 'png' || file_ext == 'jpg' ||
             file_ext == 'gif') {
-            Testimonie.findByIdAndUpdate(testimonieId, {
-                image: file_name
-            }, (err, testimonieUpdated) => {
-                if (!testimonieId) {
-                    res.status(404).send({
-                        message: 'No se ha podido actualizar el testimonio'
-                    });
+        
+            Testimonie.findOneAndUpdate({_id: testimonieId}, {image: file_name}, {new: true}, (err, updateTestimonie) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error en la petición' });
                 } else {
-                    res.status(200).send({
-                        testimonie: testimonieUpdated
-                    });
+                    if (!updateTestimonie) {
+                        res.status(404).send({ message: 'No se pudo actualizar' });
+                    } else {
+                        res.status(200).send({ testimonie: updateTestimonie });
+                    }
                 }
             });
         } else {

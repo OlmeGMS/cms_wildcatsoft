@@ -83,7 +83,7 @@ function updateTheme(req, res) {
     var themeId = req.params.id;
     var update = req.body;
 
-    Theme.findByIdAndUpdate(themeId, update, (err, themeUpdate) => {
+    Theme.findOneAndUpdate({_id: themeId}, update, {new: true}, (err, themeUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -99,7 +99,7 @@ function updateTheme(req, res) {
 function deleteTheme(req, res) {
     var themeId = req.params.id;
 
-    Theme.findByIdAndRemove(themeId, (err, themeRemove) => {
+    Theme.findByIdAndDelete({_id: themeId, theme: res.theme}, (err, themeRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {

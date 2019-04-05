@@ -83,7 +83,7 @@ function updateSlider(req, res) {
     var sliderId = req.params.id;
     var update = req.body;
 
-    Slider.findByIdAndUpdate(sliderId, update, (err, sliderUpdate) => {
+    Slider.findOneAndUpdate({_id: sliderId}, update, {new: true}, (err, sliderUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -99,7 +99,7 @@ function updateSlider(req, res) {
 function deleteSlider(req, res) {
     var sliderId = req.params.id;
 
-    Slider.findByIdAndRemove(sliderId, (err, sliderRemove) => {
+    Slider.findOneAndDelete({_id: sliderId, slider: res.slider}, (err, sliderRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar el slider' });
         } else {
@@ -125,21 +125,21 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
-        if (file_ext == 'png' || file_ext || 'jpg' ||
+        if (file_ext == 'png' || file_ext == 'jpg' ||
             file_ext == 'gif') {
-            Slider.findByIdAndUpdate(sliderId, {
-                image: file_name
-            }, (err, sliderUpdated) => {
-                if (!sliderId) {
-                    res.status(404).send({
-                        message: 'No se ha podido actualizar el slider'
-                    });
+            
+            Slider.findOneAndUpdate({_id: sliderId}, {image_slider: file_name}, {new: true}, (err, sliderUpdate) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error en la petición' });
                 } else {
-                    res.status(200).send({
-                        slider: sliderUpdated
-                    });
+                    if (!sliderUpdate) {
+                        res.status(404).send({ message: 'No se pudo actualizar el slider' });
+                    } else {
+                        res.status(200).send({ slider: sliderUpdate });
+                    }
                 }
             });
+
         } else {
             res.status(200).send({
                 message: 'La extensión del archivo noes valido'
