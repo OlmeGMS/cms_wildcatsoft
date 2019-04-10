@@ -60,7 +60,7 @@ function getListPromo(req, res) {
 
 function savePromo(req, res) {
     var promo = new Promo();
-    var paras = req.body;
+    var params = req.body;
 
     promo.title_promo = params.title_promo;
     promo.subtitle_promo = params.subtitle_promo;
