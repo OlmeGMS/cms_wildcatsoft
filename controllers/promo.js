@@ -63,6 +63,7 @@ function savePromo(req, res) {
     var paras = req.body;
 
     promo.title_promo = params.title_promo;
+    promo.subtitle_promo = params.subtitle_promo;
     promo.btn_promo = params.btn_promo;
 
     promo.save((err, promoStored) => {
