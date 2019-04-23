@@ -16,7 +16,7 @@ function getPromo(req, res) {
             if (!promo) {
                 res.status(404).send({ message: 'La seccion promo no existe' });
             } else {
-                res.status(200).send({ promo })
+                res.status(200).send({ promo: promo });
             }
         }
     });
