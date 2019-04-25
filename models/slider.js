@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 
 var SliderSchema = Schema({
   image_slider: String,
-  text_slider: String,
+  title_slider: String,
+  subtitle_slider: String,
   btn_slider: String,
   status: Boolean
 });
