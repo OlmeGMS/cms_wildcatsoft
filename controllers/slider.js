@@ -15,7 +15,7 @@ function getSlider(req, res) {
             if (!slider) {
                 res.status(404).send({ message: 'El slider no exite' });
             } else {
-                res.status(200).send({ slider });
+                res.status(200).send({ slider: slider });
             }
         }
     });

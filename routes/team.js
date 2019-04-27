@@ -11,7 +11,8 @@ var md_upload = multipart({ uploadDir: './uploads/team'});
 
 api.get('/team/:id', md_auth.ensureAuth, TeamController.getTeam);
 api.post('/team', md_auth.ensureAuth, TeamController.saveTeam);
-api.get('/teams/:id?', md_auth.ensureAuth, TeamController.getTeams);
+api.get('/teams/:page?', md_auth.ensureAuth, TeamController.getTeams);
+api.get('/team-list', TeamController.getListTeams);
 api.put('/team/:id', md_auth.ensureAuth, TeamController.updateTeam);
 api.delete('/team/:id', md_auth.ensureAuth, TeamController.deleteTeam);
 api.post('/upload-image-team/:id', [md_auth.ensureAuth, md_upload], TeamController.uploadImage);

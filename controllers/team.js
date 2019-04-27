@@ -8,14 +8,14 @@ var Team = require('../models/team');
 function getTeam(req, res) {
     var teamId = req.params.id;
 
-    Team.findById(teamId, (err, teamId) => {
+    Team.findById(teamId, (err, team) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!teamId) {
+            if (!team) {
                 res.status(404).send({ message: 'la seccion team no existe' });
             } else {
-                res.status(200).send({ team });
+                res.status(200).send({ team: team });
             }
         }
     });
@@ -28,7 +28,7 @@ function getTeams(req, res) {
         var page = 1;
     }
 
-    var itemsPerPage = 3;
+    var itemsPerPage = 10;
 
     Team.find().sort('team').paginate(page, itemsPerPage, function(err, teams, total) {
         if (err) {
@@ -64,8 +64,35 @@ function saveTeam(req, res) {
     team.image_team = 'null';
     team.name_team = params.name_team;
     team.job_team = params.job_team;
-    team.description_team = params.description_team;
-    team.redes_team = params.redes_team;
+    if (params.description_team) {
+        team.description_team = params.description_team; 
+    } else {
+        team.description_team = 'null';
+    }
+    
+    if (params.facebook) {
+        team.facebook = params.facebook;
+    } else {
+        team.facebook = 'null';
+    }
+    
+    if (params.twitter) {
+        team.twitter = params.twitter;
+    } else {
+        team.twitter = 'null';
+    }
+
+    if (params.linkedin) {
+        team.linkedin = params.linkedin;
+    } else {
+        team.linkedin = 'null';
+    }
+
+    if (params.instagram) {
+        team.instagram = params.instagram;
+    } else {
+        team.instagram = 'null';
+    }
 
     team.save((err, teamStored) => {
         if (err) {
@@ -119,7 +146,7 @@ function uploadImage(req, res) {
     var file_name = 'No ha subido imagen...';
     
     if (req.files) {
-        var file_path = req.files.image.path;
+        var file_path = req.files.image_team.path;
         var file_split = file_path.split('\/');
         var file_name = file_split[2];
 
