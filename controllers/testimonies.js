@@ -16,7 +16,7 @@ function getTestimonie(req, res) {
             if (!testimonie) {
                 res.status(404).send({ message: 'La sección de testimonio no existe' });
             } else {
-                res.status(200).send({ testimonie })
+                res.status(200).send({ testimonie: testimonie });
             }
         }
     });
@@ -66,6 +66,7 @@ function saveTestimonie(req, res) {
     testimonie.lead_testimonies = params.lead_testimonies;
     testimonie.name_testimonies = params.name_testimonies;
     testimonie.text_testiminies = params.text_testiminies;
+    testimonie.image_testimonies = 'null';
 
 
     testimonie.save((err, testimonieStored) => {
@@ -82,7 +83,7 @@ function saveTestimonie(req, res) {
 }
 
 function updateTestimonie(req, res) {
-    var skillId = req.params.id;
+    var testimonieId = req.params.id;
     var update = req.body;
 
     Testimonie.findOneAndUpdate({_id: testimonieId}, update, {new: true}, (err, updateTestimonie) => {
@@ -119,7 +120,7 @@ function uploadImage(req, res) {
     var file_name = 'No ha subido imagen...';
 
     if (req.files) {
-        var file_path = req.files.image.path;
+        var file_path = req.files.image_testimonies.path;
         var file_split = file_path.split('\/');
         var file_name = file_split[2];
 
@@ -130,7 +131,7 @@ function uploadImage(req, res) {
         if (file_ext == 'png' || file_ext == 'jpg' ||
             file_ext == 'gif') {
         
-            Testimonie.findOneAndUpdate({_id: testimonieId}, {image: file_name}, {new: true}, (err, updateTestimonie) => {
+            Testimonie.findOneAndUpdate({_id: testimonieId}, {image_testimonies: file_name}, {new: true}, (err, updateTestimonie) => {
                 if (err) {
                     res.status(500).send({ message: 'Error en la petición' });
                 } else {
