@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 var PromoSchema = Schema({
     title_promo: String,
+    subtitle_promo: String,
     btn_promo: String
 });
 
