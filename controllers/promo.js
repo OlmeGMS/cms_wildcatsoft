@@ -16,7 +16,7 @@ function getPromo(req, res) {
             if (!promo) {
                 res.status(404).send({ message: 'La seccion promo no existe' });
             } else {
-                res.status(200).send({ promo })
+                res.status(200).send({ promo: promo });
             }
         }
     });
@@ -60,9 +60,10 @@ function getListPromo(req, res) {
 
 function savePromo(req, res) {
     var promo = new Promo();
-    var paras = req.body;
+    var params = req.body;
 
     promo.title_promo = params.title_promo;
+    promo.subtitle_promo = params.subtitle_promo;
     promo.btn_promo = params.btn_promo;
 
     promo.save((err, promoStored) => {

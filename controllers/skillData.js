@@ -3,20 +3,20 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePaginate = require('mongoose-pagination');
 
-var Skill = require('../models/skill');
+var SkillData = require('../models/skillData');
 
 
 function getSkill(req, res) {
     var skillId = req.params.id;
 
-    Skill.findById(skillId, (err, skill) => {
+    SkillData.findById(skillId, (err, skill) => {
         if (err) {
             res.status(500).send({ message: ' Error en la petición' });
         } else {
             if (!skill) {
                 res.status(404).send({ message: 'La sección de habilidades no existe' });
             } else {
-                res.status(200).send({ skill })
+                res.status(200).send({ skill: skill });
             }
         }
     });
@@ -30,9 +30,9 @@ function getSkills(req, res) {
         var page = 1;
     }
 
-    var itemsPerPage = 10;
+    var itemsPerPage = 3;
 
-    Skill.find().sort('skill').paginate(page, itemsPerPage, function(err, skills, total) {
+    SkillData.find().sort('skillData').paginate(page, itemsPerPage, function(err, skills, total) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -46,7 +46,7 @@ function getSkills(req, res) {
 }
 
 function getListSkills(req, res) {
-    Skill.find({}, function(err, skills) {
+    SkillData.find({}, function(err, skills) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -60,10 +60,10 @@ function getListSkills(req, res) {
 }
 
 function saveSkill(req, res) {
-    var skill = new Skill();
+    var skill = new SkillData();
     var params = req.body;
-    skill.name_skill = params.name_skill;
-    skill.percentage_skill = params.percentage_skill;
+    skill.title_skill = params.title_skill;
+    skill.paragraph_skill = params.paragraph_skill;
 
     skill.save((err, skillStored) => {
         if (err) {
@@ -82,7 +82,7 @@ function updateSkill(req, res) {
     var skillId = req.params.id;
     var update = req.body;
 
-    Skill.findOneAndUpdate({_id: skillId}, update, {new: true}, (err, skillUpdate) => {
+    SkillData.findOneAndUpdate({_id: skillId}, update, {new: true}, (err, skillUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -98,7 +98,7 @@ function updateSkill(req, res) {
 function deleteSkill(req, res) {
     var skillId = req.params.id;
 
-    Skill.findOneAndDelete({_id: skillId, skill: res.skill}, (err, skillRemove) => {
+    SkillData.findOneAndDelete({_id: skillId, skill: res.skill}, (err, skillRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {

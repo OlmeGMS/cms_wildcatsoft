@@ -15,7 +15,7 @@ function getSlider(req, res) {
             if (!slider) {
                 res.status(404).send({ message: 'El slider no exite' });
             } else {
-                res.status(200).send({ slider });
+                res.status(200).send({ slider: slider });
             }
         }
     });
@@ -28,7 +28,7 @@ function getSliders(req, res) {
         var page = 1;
     }
 
-    var itemsPerPage = 3;
+    var itemsPerPage = 10;
 
     Slider.find().sort('slider').paginate(page, itemsPerPage, function(err, sliders, total) {
         if (err) {
@@ -62,8 +62,9 @@ function saveSlider(req, res) {
     var params = req.body;
 
     slider.image_slider = 'null';
-    slider.text_slider = params.text;
-    slider.btn_slider = params.btn;
+    slider.title_slider = params.title_slider;
+    slider.subtitle_slider = params.subtitle_slider;
+    slider.btn_slider = params.btn_slider;
     slider.status = true;
 
     slider.save((err, sliderStored) => {
@@ -117,7 +118,7 @@ function uploadImage(req, res) {
     var file_name = 'No ha subido imagen...';
 
     if (req.files) {
-        var file_path = req.files.image.path;
+        var file_path = req.files.image_slider.path;
         var file_split = file_path.split('\/');
         var file_name = file_split[2];
 
@@ -130,7 +131,7 @@ function uploadImage(req, res) {
             
             Slider.findOneAndUpdate({_id: sliderId}, {image_slider: file_name}, {new: true}, (err, sliderUpdate) => {
                 if (err) {
-                    res.status(500).send({ message: 'Error en la petición' });
+                    res.status(500).send({ message: 'Error en la petición: '+ err });
                 } else {
                     if (!sliderUpdate) {
                         res.status(404).send({ message: 'No se pudo actualizar el slider' });
