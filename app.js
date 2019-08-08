@@ -22,6 +22,7 @@ var price_routes = require('./routes/price');
 var client_routes = require('./routes/client');
 var contact_routes = require('./routes/contact');
 var theme_routes = require('./routes/theme');
+var category_blog_routes = require('./routes/categoryBlog');
 var blog_routes = require('./routes/blog');
 var comment_routes = require('./routes/comments');
 
@@ -58,6 +59,7 @@ app.use('/api', price_routes);
 app.use('/api', client_routes);
 app.use('/api', contact_routes);
 app.use('/api', theme_routes);
+app.use('/api', category_blog_routes);
 app.use('/api', blog_routes);
 app.use('/api', comment_routes);
 

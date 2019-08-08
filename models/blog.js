@@ -10,6 +10,7 @@ var BlogSchema = Schema({
     subtitle_blog: String,
     date_blog: Date,
     tag_blog: Date,
+    category_blog: {type: Schema.ObjectId, ref: 'CategoryBlog'},
     autor_blog: {type: Schema.ObjectId, ref: 'User'}
 });
 

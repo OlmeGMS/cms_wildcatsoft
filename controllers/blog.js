@@ -68,6 +68,7 @@ function saveBlog(req, res) {
     blog.subtitle_blog = params.subtitle_blog;
     blog.date_blog = params.date_blog;
     blog.tag_blog = params.tag_blog;
+    blog.category_blog = params.category_blog;
     blog.autor_blog = params.autor_blog;
 
 

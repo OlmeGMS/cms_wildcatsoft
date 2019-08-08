@@ -29,7 +29,7 @@ function getTestimonies(req, res) {
         var page = 1;
     }
 
-    var itemsPerPage = 3;
+    var itemsPerPage = 10;
 
     Testimonie.find().sort('testimonies').paginate(page, itemsPerPage, function(err, testimonies, total) {
         if (err) {
