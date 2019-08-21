@@ -11,7 +11,7 @@ var md_upload = multipart({ uploadDir: './uploads/blog' });
 
 api.get('/category_blog/:id', md_auth.ensureAuth, CategoryBlogController.getCategoryBlog);
 api.post('/category_blog', md_auth.ensureAuth, CategoryBlogController.saveCategoryBlog);
-api.get('/category_blogs/:id?', md_auth.ensureAuth, CategoryBlogController.getCategoriesBlog);
+api.get('/category_blogs/:page?', md_auth.ensureAuth, CategoryBlogController.getCategoriesBlog);
 api.put('/category_blog/:id', md_auth.ensureAuth, CategoryBlogController.updateCategoryBlog);
 api.delete('/category_blog/:id', md_auth.ensureAuth, CategoryBlogController.deleteCategoryBlog);
 
