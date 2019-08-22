@@ -82,7 +82,7 @@ function updateCategoryBlog(req, res) {
     var categoryBlogId = req.params.id;
     var update = req.body;
 
-    Testimonie.findOneAndUpdate({_id: categoryBlogId}, update, {new: true}, (err, updateCategoryBlog) => {
+    CategoryBlog.findOneAndUpdate({_id: categoryBlogId}, update, {new: true}, (err, updateCategoryBlog) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -98,7 +98,7 @@ function updateCategoryBlog(req, res) {
 function deleteCategoryBlog(req, res) {
     var categoryBlogId = req.params.id;
 
-    Testimonie.findOneAndDelete({_id:categoryBlogId, categoryBlog: res.categoryBlog}, (err, categoryBlogRemove) => {
+    CategoryBlog.findOneAndDelete({_id:categoryBlogId, categoryBlog: res.categoryBlog}, (err, categoryBlogRemove) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
