@@ -63,9 +63,9 @@ function saveCategoryBlog(req, res) {
 
     categoryBlog.name = params.name;
  
+    console.log(categoryBlog.name);
 
-
-    CategoryBlog.save((err, categoryBlogStored) => {
+    categoryBlog.save((err, categoryBlogStored) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
