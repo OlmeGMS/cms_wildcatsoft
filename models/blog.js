@@ -9,7 +9,7 @@ var BlogSchema = Schema({
     image_blog: String,
     subtitle_blog: String,
     date_blog: Date,
-    tag_blog: Date,
+    tag_blog: String,
     category_blog: {type: Schema.ObjectId, ref: 'CategoryBlog'},
     autor_blog: {type: Schema.ObjectId, ref: 'User'}
 });

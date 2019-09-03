@@ -111,6 +111,7 @@ function deleteCategoryBlog(req, res) {
     });
 }
 
+
 module.exports = {
     getCategoryBlog,
     getCategoriesBlog,
@@ -118,3 +119,4 @@ module.exports = {
     updateCategoryBlog,
     deleteCategoryBlog
 }
+
