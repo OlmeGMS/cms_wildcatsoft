@@ -43,7 +43,7 @@ function getCategoriesBlog(req, res) {
     });
 }
 
-function getCategoriesBlog(req, res) {
+function getCategoriesBlogList(req, res) {
     CategoryBlog.find({}, function(err, categoriesBlog) {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
@@ -115,6 +115,7 @@ function deleteCategoryBlog(req, res) {
 module.exports = {
     getCategoryBlog,
     getCategoriesBlog,
+    getCategoriesBlogList,
     saveCategoryBlog,
     updateCategoryBlog,
     deleteCategoryBlog

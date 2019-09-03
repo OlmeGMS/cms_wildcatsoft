@@ -11,6 +11,7 @@ var BlogSchema = Schema({
     date_blog: Date,
     tag_blog: String,
     category_blog: {type: Schema.ObjectId, ref: 'CategoryBlog'},
+    text_blog: String,
     autor_blog: {type: Schema.ObjectId, ref: 'User'}
 });
 
