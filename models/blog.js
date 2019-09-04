@@ -12,7 +12,7 @@ var BlogSchema = Schema({
     tag_blog: String,
     category_blog: {type: Schema.ObjectId, ref: 'CategoryBlog'},
     text_blog: String,
-    autor_blog: {type: Schema.ObjectId, ref: 'User'}
+    autor_blog: String
 });
 
 module.exports = mongoose.model('Blog', BlogSchema);

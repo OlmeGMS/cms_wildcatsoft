@@ -124,7 +124,7 @@ function uploadImage(req, res) {
     var file_name = 'No ha subido imagen...';
 
     if (req.files) {
-        var file_path = req.files.image.path;
+        var file_path = req.files.image_blog.path;
         var file_split = file_path.split('\/');
         var file_name = file_split[2];
 
