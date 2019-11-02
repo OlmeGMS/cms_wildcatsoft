@@ -28,7 +28,7 @@
     "express": "^4.16.4",
     "jwt-simple": "^0.5.5",
     "moment": "^2.23.0",
-    "mongoose": "^5.4.2",
+    "mongoose": "^5.7.5",
     "mongoose-pagination": "^1.0.0"
   },
   "devDependencies": {
